@@ -4,13 +4,13 @@ const Product = mongoose.model('products');
 
 module.exports = {
     async index(request, response) {
-        const products = await Product.paginate({}, {page: 1, limit: 7 });
-        const { page  = 1 }  = request.query;
+        const { page = 1 } = request.query;
+        const products = await Product.paginate({}, { page, limit: 7 });
         return response.json(products);
     },
 
     async show(request, response) {
-        const product = await Product.findById();
+        const product = await Product.findById(request.params.id);
 
         return response.json(product);1
     },
@@ -23,7 +23,7 @@ module.exports = {
     async destroy (request, response){
         await Product.findByIdAndRemove(request.params.id);
 
-        return response.send();1
+        return response.send();
     },
 
     async store(request, response) {
